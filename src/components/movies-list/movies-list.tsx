@@ -1,5 +1,6 @@
 import { TFilm } from '../../types/film';
-import Movie from '../movie/movie';
+import Movie from '../movie';
+import './movies-list.css';
 
 interface IMoviesList {
   films: TFilm[];

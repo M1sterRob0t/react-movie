@@ -1,0 +1,12 @@
+.movies {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  padding: 23px 35px;
+  max-width: 1010px;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  margin: 0 auto;
+}

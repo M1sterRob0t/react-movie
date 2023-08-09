@@ -1,0 +1,9 @@
+.movies__list {
+  display: flex;
+  gap: 37px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+}
