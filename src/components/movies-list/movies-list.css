@@ -2,7 +2,7 @@
   display: flex;
   gap: 37px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 
   margin: 0;
   padding: 0;

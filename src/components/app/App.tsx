@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import _ from 'lodash';
 
+import Spinner from '../spinner';
 import MoviesList from '../movies-list';
-import { getData } from '../../services/api';
+import { getFilmsByQuery, getRandomFilms } from '../../services/api';
 import { TFilm } from '../../types/film';
 import './app.css';
 import Popup from '../popup';
+import Search from '../search';
 
-const antIcon = <LoadingOutlined style={{ fontSize: 120 }} spin />;
+const SEARCH_INPUT_DELAY = 500;
 
 function App(): JSX.Element {
   const [isOffline, setOffline] = useState(false);
@@ -16,6 +17,27 @@ function App(): JSX.Element {
   const [isLoading, setLoading] = useState(true);
   const [films, setFilms] = useState<TFilm[]>([]);
   const [error, setErrorInfo] = useState<Error>();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  console.log('rerender');
+  function fetchData(fn: (query?: string) => Promise<TFilm[]>, argument: string = ''): void {
+    fn(argument)
+      .then((data) => data.filter((film) => film.backdropPath))
+      .then((data) => setFilms(data))
+      .then(() => setLoading(false))
+      .then(() => setSearchQuery(argument))
+      .catch((err: Error) => {
+        setLoading(false);
+        setError(true);
+        setErrorInfo(err);
+      });
+  }
+
+  const debauncedSearchInputChangeHandler = _.debounce((searchQuery: string) => {
+    setLoading(true);
+    if (searchQuery) fetchData(getFilmsByQuery, searchQuery);
+    else fetchData(getRandomFilms);
+  }, SEARCH_INPUT_DELAY);
 
   useEffect(() => {
     window.addEventListener('online', () => {
@@ -28,22 +50,19 @@ function App(): JSX.Element {
       setOffline(true);
     });
 
-    getData()
-      .then((data) => data.filter((film) => film.backdropPath))
-      .then((data) => setFilms(data))
-      .then(() => setLoading(false))
-      .catch((err: Error) => {
-        setLoading(false);
-        setError(true);
-        setErrorInfo(err);
-      });
+    fetchData(getRandomFilms);
   }, []);
 
   if (isOffline) return <Popup offline />;
-  if (isLoading) return <Spin indicator={antIcon} />;
+  //if (isLoading) return <Spin indicator={antIcon} />;
   if (isError && error) return <Popup type={'error'} name={error.name} message={error.message} />;
 
-  return <MoviesList films={films} />;
+  return (
+    <>
+      <Search searchQuery={searchQuery} changeHandler={debauncedSearchInputChangeHandler} />
+      {isLoading ? <Spinner /> : <MoviesList films={films} />}
+    </>
+  );
 }
 
 export default App;
