@@ -1,9 +1,10 @@
-const { Text } = Typography;
 import { Space, Typography } from 'antd';
 
 import Movie from '../movie';
 import { TFilm } from '../../types/film';
 import './movies-list.css';
+
+const { Text } = Typography;
 
 interface IMoviesList {
   films: TFilm[];

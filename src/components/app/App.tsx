@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import _ from 'lodash';
+import { Pagination } from 'antd';
 
 import Spinner from '../spinner';
 import MoviesList from '../movies-list';
@@ -8,8 +9,12 @@ import { TFilm } from '../../types/film';
 import './app.css';
 import Popup from '../popup';
 import Search from '../search';
+import { TData } from '../../types/data';
 
 const SEARCH_INPUT_DELAY = 500;
+const MAX_PAGE_NUMBER = 500;
+const MAX_RESULTS = 10000;
+const FILMS_PER_PAGE = 20;
 
 function App(): JSX.Element {
   const [isOffline, setOffline] = useState(false);
@@ -18,14 +23,22 @@ function App(): JSX.Element {
   const [films, setFilms] = useState<TFilm[]>([]);
   const [error, setErrorInfo] = useState<Error>();
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState<number>();
 
-  console.log('rerender');
-  function fetchData(fn: (query?: string) => Promise<TFilm[]>, argument: string = ''): void {
-    fn(argument)
-      .then((data) => data.filter((film) => film.backdropPath))
-      .then((data) => setFilms(data))
+  function fetchData(fn: (query?: string, page?: number) => Promise<TData>, query: string = '', page: number): void {
+    setLoading(true);
+    fn(query, page)
+      .then((data) => {
+        setPage(data.page);
+        setTotalResults(data.results);
+        data.results / FILMS_PER_PAGE <= MAX_PAGE_NUMBER ? setTotalResults(data.results) : setTotalResults(MAX_RESULTS);
+        return data.films;
+      })
+      .then((films) => films.filter((film) => film.backdropPath))
+      .then((films) => setFilms(films))
       .then(() => setLoading(false))
-      .then(() => setSearchQuery(argument))
+      .then(() => setSearchQuery(query))
       .catch((err: Error) => {
         setLoading(false);
         setError(true);
@@ -34,9 +47,8 @@ function App(): JSX.Element {
   }
 
   const debauncedSearchInputChangeHandler = _.debounce((searchQuery: string) => {
-    setLoading(true);
-    if (searchQuery) fetchData(getFilmsByQuery, searchQuery);
-    else fetchData(getRandomFilms);
+    if (searchQuery) fetchData(getFilmsByQuery, searchQuery, 1);
+    else fetchData(getRandomFilms, '', currentPage);
   }, SEARCH_INPUT_DELAY);
 
   useEffect(() => {
@@ -50,17 +62,31 @@ function App(): JSX.Element {
       setOffline(true);
     });
 
-    fetchData(getRandomFilms);
+    fetchData(getRandomFilms, searchQuery, currentPage);
   }, []);
 
   if (isOffline) return <Popup offline />;
-  //if (isLoading) return <Spin indicator={antIcon} />;
   if (isError && error) return <Popup type={'error'} name={error.name} message={error.message} />;
-
   return (
     <>
       <Search searchQuery={searchQuery} changeHandler={debauncedSearchInputChangeHandler} />
-      {isLoading ? <Spinner /> : <MoviesList films={films} />}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <MoviesList films={films} />
+          <Pagination
+            style={{ textAlign: 'center' }}
+            defaultCurrent={currentPage}
+            pageSize={FILMS_PER_PAGE}
+            total={totalResults}
+            onChange={(page) =>
+              searchQuery ? fetchData(getFilmsByQuery, searchQuery, page) : fetchData(getRandomFilms, searchQuery, page)
+            }
+            showSizeChanger={false}
+          />
+        </>
+      )}
     </>
   );
 }
