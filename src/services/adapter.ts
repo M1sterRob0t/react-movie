@@ -19,5 +19,6 @@ export function filmAdapter(serverFilm: TServerFilm): TFilm {
     video: serverFilm.video,
     voteAverage: Number(serverFilm.vote_average.toFixed(1)),
     voteCount: serverFilm.vote_count,
+    rating: null,
   };
 }

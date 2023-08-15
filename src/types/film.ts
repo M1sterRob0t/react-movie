@@ -13,4 +13,5 @@ export type TFilm = {
   video: boolean;
   voteAverage: number;
   voteCount: number;
+  rating: number | null;
 };

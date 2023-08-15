@@ -27,11 +27,12 @@ function Movie({ film, onRatingChange }: IMovie): JSX.Element {
           <h4 className="movie__date">{film.releaseDate}</h4>
           <GenresList genres={movieGenres} />
           <div className="movie__desc">{hideLongDescription(film.overview, MAX_DESC_LENGTH)}</div>
-          <RatingNumber evaluation={film.voteAverage} />
+          <RatingNumber evaluation={film.rating} />
         </div>
         <Rate
+          className="movie__rating"
           allowHalf
-          defaultValue={film.voteAverage}
+          defaultValue={Number(film.rating)}
           count={10}
           style={{ fontSize: '15px' }}
           onChange={(newRating) => onRatingChange(film.id, newRating)}
