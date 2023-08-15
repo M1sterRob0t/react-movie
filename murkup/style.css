@@ -21,6 +21,7 @@ body {
 }
 
 .movie__content {
+  position: relative;
   order: 2;
   padding: 10px 20px;
 }
@@ -33,6 +34,7 @@ body {
   font-size: 20px;
   color: #000000;
   font-weight: 500;
+  padding-right: 35px;
 
   margin: 0;
   margin-bottom: 15px;
@@ -43,6 +45,7 @@ body {
   line-height: 22px;
   color: #827E7E;
   font-weight: 400;
+  padding-right: 35px;
 
   margin: 0;
   margin-bottom: 10px;
@@ -66,6 +69,24 @@ body {
 
 .movie__genres-item {
   list-style: none;
+}
+
+.movie__rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #E9D100;
+  background-color: transparent;
+  border-radius: 50%;
 }
 
 

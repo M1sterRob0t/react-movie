@@ -14,15 +14,16 @@
 }
 
 .movie__content {
-  order: 2;
+  position: relative;
 
+  order: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   box-sizing: border-box;
   height: 100%;
-  padding: 10px 20px;
+  padding: 15px 20px 20px 20px;
 }
 
 .movie__poster {
@@ -34,6 +35,7 @@
   color: #000000;
   font-weight: 500;
 
+  padding-right: 40px;
   margin: 0;
   margin-bottom: 15px;
 }
@@ -44,6 +46,7 @@
   color: #827E7E;
   font-weight: 400;
 
+  padding-right: 40px;
   margin: 0;
   margin-bottom: 10px;
 }
@@ -54,4 +57,10 @@
   color: #000000;
 
   margin-bottom: 10px;
+}
+
+.movie__rating-number {
+  position: absolute;
+  right: 20px;
+  top: 15px;
 }

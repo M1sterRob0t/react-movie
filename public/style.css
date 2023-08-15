@@ -4,17 +4,4 @@ body {
   margin: 0;
 }
 
-.movie__genres-lsit {
-  display: flex;
-  column-gap: 10px;
-
-  margin: 0;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-.movie__genres-item {
-  list-style: none;
-}
-
 

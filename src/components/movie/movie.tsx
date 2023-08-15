@@ -1,32 +1,41 @@
+import { useContext } from 'react';
+import { Rate } from 'antd';
+
 import { TFilm } from '../../types/film';
 import { hideLongDescription } from '../../utils';
+import GenresList from '../genres-list';
 import './movie.css';
-import Rating from '../rating/rating';
+import { GenresContext } from '../genres-context/genres-context';
+import RatingNumber from '../rating-number';
 
 const MAX_DESC_LENGTH = 110;
 
 interface IMovie {
   film: TFilm;
+  onRatingChange: (movieId: number, newRating: number) => void;
 }
 
-function Movie({ film }: IMovie): JSX.Element {
+function Movie({ film, onRatingChange }: IMovie): JSX.Element {
+  const genres = useContext(GenresContext);
+  const movieGenres = genres.filter((genre) => film.genreIds.includes(genre.id));
+
   return (
     <li className="movies__item movie">
       <div className="movie__content">
         <div className="movie__inner">
           <h3 className="movie__title">{film.title}</h3>
           <h4 className="movie__date">{film.releaseDate}</h4>
-          <ul className="movie__genres-lsit">
-            <li className="movie__genres-item">
-              <button className="movie__genre">Action</button>
-            </li>
-            <li className="movie__genres-item">
-              <button className="movie__genre">Drama</button>
-            </li>
-          </ul>
+          <GenresList genres={movieGenres} />
           <div className="movie__desc">{hideLongDescription(film.overview, MAX_DESC_LENGTH)}</div>
+          <RatingNumber evaluation={film.voteAverage} />
         </div>
-        <Rating className="movie__rating" filmRating={film.voteAverage} />
+        <Rate
+          allowHalf
+          defaultValue={film.voteAverage}
+          count={10}
+          style={{ fontSize: '15px' }}
+          onChange={(newRating) => onRatingChange(film.id, newRating)}
+        />
       </div>
       <img
         className="movie__poster"

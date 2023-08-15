@@ -8,13 +8,16 @@ const { Text } = Typography;
 
 interface IMoviesList {
   films: TFilm[];
+  onRatingChange: (movieId: number, newRating: number) => void;
 }
 
-function MoviesList({ films }: IMoviesList): JSX.Element {
+function MoviesList({ films, onRatingChange }: IMoviesList): JSX.Element {
   return (
     <ul className="movies__list">
       {films.length ? (
-        films.map((film) => <Movie film={film} key={film.id} />)
+        films.map((film) => {
+          return <Movie film={film} key={film.id} onRatingChange={onRatingChange} />;
+        })
       ) : (
         <Space direction="vertical" style={{ textAlign: 'center', width: '100%' }}>
           <Text type="secondary">There are no films matching your request.</Text>

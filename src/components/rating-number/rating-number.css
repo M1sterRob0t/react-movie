@@ -1,0 +1,13 @@
+.rating-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #E9D100;
+  background-color: transparent;
+  border-radius: 50%;
+}

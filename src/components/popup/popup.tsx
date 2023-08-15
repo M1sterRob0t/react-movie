@@ -14,7 +14,7 @@ function Popup({ name = 'Error', message = '', type = 'error', offline = false }
   }
 
   return (
-    <Space direction="vertical" style={{ width: 500, height: 200 }}>
+    <Space direction="vertical" style={{ width: 500, height: 200, margin: '35vh auto' }}>
       <Alert type={type} showIcon message={name} description={message} style={{ transform: 'scale(1.4)' }} />
     </Space>
   );

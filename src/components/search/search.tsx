@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ISearch {
   changeHandler: (searchQuery: string) => void;
@@ -8,6 +8,7 @@ interface ISearch {
 
 function Search({ changeHandler, searchQuery }: ISearch) {
   const [value, setValue] = useState(searchQuery);
+  useEffect(() => setValue(searchQuery), [searchQuery]);
 
   return (
     <Input
