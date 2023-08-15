@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Rate } from 'antd';
 
-import { TFilm } from '../../types/film';
+import { TFilm } from '../../types';
 import { hideLongDescription } from '../../utils';
 import GenresList from '../genres-list';
 import './movie.css';

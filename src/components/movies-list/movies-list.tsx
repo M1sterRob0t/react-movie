@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd';
 
 import Movie from '../movie';
-import { TFilm } from '../../types/film';
+import { TFilm } from '../../types';
 import './movies-list.css';
 
 const { Text } = Typography;

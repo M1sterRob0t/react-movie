@@ -1,5 +1,5 @@
 import './genres-list.css';
-import { TGenre } from '../../types/genre';
+import { TGenre } from '../../types';
 import Genre from '../genre/genre';
 
 interface IGenresProps {

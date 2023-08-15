@@ -14,19 +14,6 @@ export default class AppStorage<T> {
     else return [];
   }
 
-  setItem(key: string, value: T): void {
-    const store = this.getItems();
-
-    this._storage.setItem(
-      this._storeKey,
-      JSON.stringify(
-        Object.assign({}, store, {
-          [key]: JSON.stringify(value),
-        })
-      )
-    );
-  }
-
   setItems(items: T[]): void {
     this._storage.setItem(this._storeKey, JSON.stringify(items));
   }

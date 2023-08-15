@@ -2,7 +2,6 @@ import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 
 import { Tab } from '../../const';
-
 import './nav-tabs.css';
 
 const items: TabsProps['items'] = [

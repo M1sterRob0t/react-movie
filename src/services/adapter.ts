@@ -1,9 +1,8 @@
 import format from 'date-fns/format';
 
-import { TServerFilm } from '../types/serverFilm';
-import { TFilm } from '../types/film';
+import { TFilmsResponseBody, TServerFilmsResponseBody, TFilm, TServerFilm } from '../types';
 
-export function filmAdapter(serverFilm: TServerFilm): TFilm {
+function filmAdapter(serverFilm: TServerFilm): TFilm {
   return {
     adult: serverFilm.adult,
     backdropPath: serverFilm.backdrop_path,
@@ -20,5 +19,14 @@ export function filmAdapter(serverFilm: TServerFilm): TFilm {
     voteAverage: Number(serverFilm.vote_average.toFixed(1)),
     voteCount: serverFilm.vote_count,
     rating: null,
+  };
+}
+
+export function responseBodyAdapter(serverResponseBody: TServerFilmsResponseBody): TFilmsResponseBody {
+  return {
+    page: serverResponseBody.page,
+    results: serverResponseBody.results.map((film) => filmAdapter(film)),
+    totalPages: serverResponseBody.total_pages,
+    totalResults: serverResponseBody.total_results,
   };
 }
